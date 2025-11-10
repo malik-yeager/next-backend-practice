@@ -1,0 +1,39 @@
+my-blog-backend/
+├── package.json
+├── tsconfig.json
+├── .env
+├── src/
+│   ├── server.ts                 # Express server entry point
+│   ├── ormconfig.ts              # TypeORM DataSource
+│   ├── auth/
+│   │   ├── betterAuth.ts         # Better Auth initialization
+│   │   ├── auth.controller.ts    # Login, logout, refresh token
+│   │   ├── auth.routes.ts        # /login, /logout, /refresh, /session
+│   │   ├── session.service.ts    # Manage sessions (DB or token storage)
+│   │   └── role.service.ts       # Optional role checks for auth
+│   ├── entities/
+│   │   ├── user.ts
+│   │   ├── role.ts
+│   │   └── session.ts            # Optional: persistent session table
+│   ├── controllers/
+│   │   ├── user.controller.ts
+│   │   └── role.controller.ts
+│   ├── routes/
+│   │   ├── user.routes.ts
+│   │   └── role.routes.ts
+│   ├── services/
+│   │   ├── user.service.ts
+│   │   ├── role.service.ts
+│   │   └── auth.service.ts       # Login, logout, token/session management
+│   ├── middlewares/
+│   │   ├── requireRole.ts        # Role-based route protection
+│   │   ├── sessionValidator.ts   # Check session validity
+│   │   └── authMiddleware.ts     # Attach user to req from token/session
+│   └── utils/
+│       ├── hashPassword.ts
+│       ├── tokenUtils.ts         # JWT/session helpers
+│       └── logger.ts             # Logging utility
+└── tests/                        # Integration/unit tests for auth and routes
+
+
+ npx typeorm schema:sync -d dist/ormconfig.js
