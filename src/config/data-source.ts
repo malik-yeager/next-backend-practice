@@ -13,6 +13,7 @@ import { AuditLog } from "../entities/AuditLog"
 import { Category } from "../entities/Category"
 import { Tag } from "../entities/Tag"
 import { Post } from "../entities/Post"
+import { Draft } from "../entities/Draft"
 
 
 
@@ -27,6 +28,6 @@ export const AppDataSource = new DataSource({
   url: process.env.DATABASE_URL,
   synchronize: true,
   logging: true,
-  entities: [User, Account, Session, VerificationToken, Role, RolePermission, ModulePermission, Category, Tag, Post, AuditLog],
+  entities: [User, Account, Session, VerificationToken, Role, RolePermission, ModulePermission, Category, Tag, Post, AuditLog, Draft],
   subscribers: [AuditSubscriber],
 })

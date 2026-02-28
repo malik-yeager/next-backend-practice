@@ -140,35 +140,35 @@ const seed = async () => {
     }
 
     // 6️⃣ NEW: Default Category + Audit
-const existingCategory = await categoryRepo.findOne({
-  where: { slug: "general" },
-});
+    const existingCategory = await categoryRepo.findOne({
+      where: { slug: "general" },
+    });
 
     if (!existingCategory) {
-  const category = categoryRepo.create({
-    name: "General",
-    slug: "general",
-    description: "General articles and updates",
-    createdBy: user,
-    updatedBy: user,
-  });
+      const category = categoryRepo.create({
+        name: "General",
+        slug: "general",
+        description: "General articles and updates",
+        createdBy: user,
+        updatedBy: user,
+      });
 
-  await categoryRepo.save(category);
-  console.log("✅ Default category created");
+      await categoryRepo.save(category);
+      console.log("✅ Default category created");
 
-  // 🔍 Audit log entry
-  await auditLogger({
-    action: "CREATE",
-    entity_name: "Category",
-    entity_id: category.id,
-    details: {
-      name: category.name,
-      slug: category.slug,
-      description: category.description,
-    },
-    endpoint: "seed-script",
-    ip_address: "127.0.0.1",
-  });
+      // 🔍 Audit log entry
+      await auditLogger({
+        action: "CREATE",
+        entity_name: "Category",
+        entity_id: category.id,
+        details: {
+          name: category.name,
+          slug: category.slug,
+          description: category.description,
+        },
+        endpoint: "seed-script",
+        ip_address: "127.0.0.1",
+      });
 
       console.log("🧾 Audit log added for category creation");
     }

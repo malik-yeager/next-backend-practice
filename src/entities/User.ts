@@ -23,12 +23,18 @@ export class User extends BaseEntity {
 
   @Column({ type: "text", nullable: true, unique: true })
   email!: string | null
-  
+
   @Column({ type: "timestamp", nullable: true })
   emailVerified!: Date | null;
 
   @Column({ type: "text", nullable: true })
   image!: string | null;
+
+  @Column({ type: "text", nullable: true })
+  bio!: string | null;
+
+  @Column({ type: "jsonb", nullable: true })
+  social_links!: Record<string, string> | null;
 
   // Foreign Key reference to Role
   @Column({ type: "uuid", nullable: true })

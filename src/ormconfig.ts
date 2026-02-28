@@ -11,6 +11,7 @@ import { Category } from "./entities/Category";
 import { Tag } from "./entities/Tag";
 import { Post } from "./entities/Post";
 import { AuditLog } from "./entities/AuditLog"
+import { Subscriber } from "./entities/Subscriber";
 dotenv.config();
 
 if (!process.env.DATABASE_URL) {
@@ -22,5 +23,5 @@ export const AppDataSource = new DataSource({
   url: process.env.DATABASE_URL,  // safe now
   synchronize: true,
   logging: true,
-  entities: [User, Account, Session, VerificationToken, Role, RolePermission, ModulePermission, Category, Tag, Post, AuditLog],
+  entities: [User, Account, Session, VerificationToken, Role, RolePermission, ModulePermission, Category, Tag, Post, AuditLog, Subscriber],
 });

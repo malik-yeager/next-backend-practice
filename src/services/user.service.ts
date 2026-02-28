@@ -68,7 +68,13 @@ export const getUserById = async (id: string) => {
 };
 
 
-export const createUser = async (name: string, email: string, roleId?: string | null) => {
+export const createUser = async (
+  name: string,
+  email: string,
+  roleId?: string | null,
+  bio?: string | null,
+  social_links?: Record<string, string> | null
+) => {
   if (!email) throw new Error("Email is required");
 
   const existingUser = await userRepo.findOne({ where: { email } });
@@ -77,6 +83,8 @@ export const createUser = async (name: string, email: string, roleId?: string | 
   const user = userRepo.create({
     name,
     email,
+    bio: bio || null,
+    social_links: social_links || null
   });
 
   // ✅ If roleId is provided, attach role
@@ -91,12 +99,14 @@ export const createUser = async (name: string, email: string, roleId?: string | 
 };
 
 
-// ✅ Update user (unchanged)
+// ✅ Update user
 export const updateUser = async (
   id: string,
   name?: string | null,
   email?: string | null,
-  roleId?: string | null
+  roleId?: string | null,
+  bio?: string | null,
+  social_links?: Record<string, string> | null
 ) => {
   const user = await userRepo.findOne({ where: { id }, relations: ["role"] });
   if (!user) throw new Error("User not found");
@@ -107,6 +117,9 @@ export const updateUser = async (
   }
 
   if (name !== undefined) user.name = name;
+  if (bio !== undefined) user.bio = bio;
+  if (social_links !== undefined) user.social_links = social_links;
+
   if (!email) throw new Error("Email is required");
   user.email = email;
 

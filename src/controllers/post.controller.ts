@@ -46,9 +46,37 @@ export class PostController {
     }
   }
 
+  // ✅ Get related posts
+  async getRelatedPosts(req: Request<PostParams>, res: Response) {
+    const { id } = req.params;
+    if (!id)
+      return res.status(400).json({ status: "error", message: "Missing post ID" });
+
+    try {
+      const posts = await postService.getRelatedPosts(id);
+      res.json({
+        status: "success",
+        data: posts,
+      });
+    } catch (err: any) {
+      res.status(500).json({
+        status: "error",
+        message: err.message,
+      });
+    }
+  }
+
   // ✅ Create new post
   async createPost(req: Request, res: Response) {
     try {
+      const user = req.user as any;
+      const isAdmin = user?.role?.role_name === 'admin';
+
+      // If not admin, force author to be current user
+      if (!isAdmin) {
+        req.body.author_id = user.id;
+      }
+
       const post = await postService.createPost(req.body);
       res.status(201).json({
         status: "success",

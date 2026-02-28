@@ -23,4 +23,13 @@ router.get("/google/callback", passport.authenticate("google", { failureRedirect
   }
 );
 
+// Get Current User
+router.get("/me", (req, res) => {
+  if (req.isAuthenticated && req.isAuthenticated()) {
+    res.json({ status: "success", user: req.user });
+  } else {
+    res.status(401).json({ status: "error", message: "Unauthorized" });
+  }
+});
+
 export default router;

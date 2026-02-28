@@ -55,17 +55,17 @@ export class UserController {
 
   // ✅ Create new user
   async createUser(req: Request, res: Response) {
-    const { name, email, roleId } = req.body;
-  
+    const { name, email, roleId, bio, social_links } = req.body;
+
     if (!name || !email) {
       return res.status(400).json({
         status: "error",
         message: "Missing required fields",
       });
     }
-  
+
     try {
-      const user = await userService.createUser(name, email, roleId);
+      const user = await userService.createUser(name, email, roleId, bio, social_links);
       res.status(201).json({
         status: "success",
         data: user,
@@ -77,7 +77,7 @@ export class UserController {
       });
     }
   }
-  
+
 
   // ✅ Update user by ID
   async updateUser(req: Request<UserParams>, res: Response) {
@@ -88,10 +88,10 @@ export class UserController {
         message: "Missing user ID",
       })
 
-    const { name, email, roleId } = req.body
+    const { name, email, roleId, bio, social_links } = req.body
 
     try {
-      const user = await userService.updateUser(id, name, email)
+      const user = await userService.updateUser(id, name, email, roleId, bio, social_links)
       res.json({
         status: "success",
         data: user,

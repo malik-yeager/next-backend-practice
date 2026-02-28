@@ -22,6 +22,11 @@ export const getAllPosts = async () => {
       "post.comments_count",
       "post.created_at",
       "post.updated_at",
+      "post.affiliate",
+      "post.sponsored",
+      "post.canonical_url",
+      "post.featured_image",
+      "post.scheduled_at",
       "author.id",
       "author.name",
       "author.email",
@@ -30,6 +35,36 @@ export const getAllPosts = async () => {
     .getMany();
 
   return posts;
+};
+
+// ✅ Get related posts
+export const getRelatedPosts = async (id: string) => {
+  const post = await postRepo.findOne({ where: { id } });
+  if (!post) throw new Error("Post not found");
+
+  const { tags, categories } = post;
+
+  if ((!tags || tags.length === 0) && (!categories || categories.length === 0)) {
+    return [];
+  }
+
+  const query = postRepo.createQueryBuilder("post")
+    .where("post.id != :id", { id })
+    .andWhere("post.status = 'published'");
+
+  if (tags && tags.length > 0) {
+    query.orWhere("post.tags && :tags", { tags });
+  }
+
+  if (categories && categories.length > 0) {
+    query.orWhere("post.categories && :categories", { categories });
+  }
+
+  const relatedPosts = await query
+    .limit(5)
+    .getMany();
+
+  return relatedPosts;
 };
 
 // ✅ Get post by ID

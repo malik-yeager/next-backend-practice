@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import * as auditService from "../services/AuditLog.service";
+import * as auditService from "../services/auditLog.service";
 
 export class AuditLogController {
   // ✅ Get all audit logs
