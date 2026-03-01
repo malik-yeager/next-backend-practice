@@ -102,4 +102,32 @@ export class AuthService {
 
     return true;
   }
+
+  async setPassword(userId: string, newPassword: string): Promise<boolean> {
+    const user = await this.userRepo.findOne({ where: { id: userId } });
+    if (!user) return false;
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    let account = await this.accountRepo.findOne({
+      where: { user: { id: userId }, provider: "credentials" }
+    });
+
+    if (account) {
+      account.password = hashedPassword;
+      await this.accountRepo.save(account);
+    } else {
+      // User might have signed up with Google, now they are setting a password.
+      account = this.accountRepo.create({
+        type: "credentials",
+        provider: "credentials",
+        providerAccountId: user.email!, // Use email as account id for credentials
+        password: hashedPassword,
+        user,
+      });
+      await this.accountRepo.save(account);
+    }
+
+    return true;
+  }
 }

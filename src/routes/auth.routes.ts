@@ -19,6 +19,9 @@ router.post("/logout", AuthController.logout);
 router.post("/forgot-password", AuthController.forgotPassword);
 router.post("/reset-password", AuthController.resetPassword);
 
+// Direct Password Set / Change (Requires Login)
+router.post("/set-password", AuthController.setPassword);
+
 // Google OAuth
 router.get("/google", passport.authenticate("google", { scope: ["profile", "email"] }));
 router.get("/google/callback", passport.authenticate("google", { failureRedirect: "/" }),

@@ -91,4 +91,31 @@ export class AuthController {
       res.status(500).json({ message: "An error occurred while resetting password" });
     }
   }
+
+  static async setPassword(req: Request, res: Response) {
+    // If we use this endpoint while logged in, passport injects `req.user`
+    if (!req.user) {
+      return res.status(401).json({ message: "Unauthorized. Please log in first." });
+    }
+
+    const { newPassword } = req.body;
+    if (!newPassword) {
+      return res.status(400).json({ message: "New password is required" });
+    }
+
+    try {
+      // req.user has been injected by passport
+      const user = req.user as any;
+      const success = await authService.setPassword(user.id, newPassword);
+
+      if (!success) {
+        return res.status(400).json({ message: "Failed to set password." });
+      }
+
+      res.status(200).json({ message: "Password updated successfully" });
+    } catch (err: any) {
+      console.error(err);
+      res.status(500).json({ message: "An error occurred while updating the password" });
+    }
+  }
 }
