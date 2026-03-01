@@ -15,6 +15,10 @@ router.post("/register", AuthController.register);
 // Logout
 router.post("/logout", AuthController.logout);
 
+// Password Reset Flow
+router.post("/forgot-password", AuthController.forgotPassword);
+router.post("/reset-password", AuthController.resetPassword);
+
 // Google OAuth
 router.get("/google", passport.authenticate("google", { scope: ["profile", "email"] }));
 router.get("/google/callback", passport.authenticate("google", { failureRedirect: "/" }),

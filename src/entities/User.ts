@@ -56,6 +56,13 @@ export class User extends BaseEntity {
   @CreateDateColumn({ type: "timestamp" })
   createdAt!: Date;
 
-  @UpdateDateColumn({ type: "timestamp" })
+  @Column({ type: "timestamp" })
   updatedAt!: Date;
+
+  // 🔑 Password Reset Fields
+  @Column({ type: "varchar", nullable: true })
+  resetPasswordToken!: string | null;
+
+  @Column({ type: "timestamp", nullable: true })
+  resetPasswordExpires!: Date | null;
 }

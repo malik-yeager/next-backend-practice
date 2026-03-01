@@ -75,6 +75,11 @@ export class PostController {
       // If not admin, force author to be current user
       if (!isAdmin) {
         req.body.author_id = user.id;
+      } else {
+        // If admin, they CAN specify author_id. If they don't, fallback to their own ID
+        if (!req.body.author_id) {
+          req.body.author_id = user.id;
+        }
       }
 
       const post = await postService.createPost(req.body);
